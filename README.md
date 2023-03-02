@@ -1,4 +1,4 @@
-# CSS-Plugins
+# CSS-Plugins by Harry Potter
 CSS Competitive enhancement, bug/glitch fixes, general purpose and freaky-fun plugins.
 
 >All plugins in here only apply to CSS (last edited:2023/3/3)
@@ -11,8 +11,8 @@ If you want any modify or request, free to use or pay me money to do it.
 
 # Plugins
 > __Note__  
-> **[>>Click here to see my private plugin list<<](https://github.com/fbef0102/Game-Private_Plugin#%E7%A7%81%E4%BA%BA%E6%8F%92%E4%BB%B6%E5%88%97%E8%A1%A8-private-plugins-list)**<br/>
-> **[>>點擊我查看更多私人插件<<](https://github.com/fbef0102/Game-Private_Plugin#%E7%A7%81%E4%BA%BA%E6%8F%92%E4%BB%B6%E5%88%97%E8%A1%A8-private-plugins-list)**
+> **[>>Click here to see my private plugin list<<](https://github.com/fbef0102/Game-Private_Plugin#cs-plugin-list--css%E6%8F%92%E4%BB%B6%E5%88%97%E8%A1%A8)**<br/>
+> **[>>點擊我查看更多私人插件<<](https://github.com/fbef0102/Game-Private_Plugin#cs-plugin-list--css%E6%8F%92%E4%BB%B6%E5%88%97%E8%A1%A8)**
 
 * <b>[css_god](/css_god)</b>: Create a convar, so all players don't take damage
     * 創造一個指令，讓所有玩家無敵不受到任何傷害
