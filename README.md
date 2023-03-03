@@ -16,6 +16,8 @@ If you want any modify or request, free to use or pay me money to do it.
 
 * <b>[css_god](/css_god)</b>: Create a convar, so all players don't take damage
     * 創造一個指令，讓所有玩家無敵不受到任何傷害
+* <b>[css_drop_weapon](/css_drop_weapon)</b>: Player can drop knife and HE Grenade, Smoke Grenade, Flash Bang
+    * 可以丟棄手中的刀、閃光彈、高爆手榴彈、煙霧彈
 
 # Scripting Compiler
 * [sourcemod v1.11 compiler](https://www.sourcemod.net/downloads.php?branch=1.11-dev): scripting folder
