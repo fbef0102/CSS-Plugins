@@ -56,6 +56,7 @@ Player can drop knife and HE Grenade, Smoke Grenade, Flash Bang
 
 * 原理
     * 按下"丟棄手中的物品"按鍵時，丟棄任何武器
+    * 攜帶多個閃光彈、高爆手榴彈、煙霧彈時也可丟棄
     * 當扔出投閃光彈、高爆手榴彈、煙霧彈時，不能丟棄
     * 當使用刀進行攻擊動作時，不能丟棄
 
