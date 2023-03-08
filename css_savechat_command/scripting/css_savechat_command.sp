@@ -6,7 +6,7 @@
 #include <geoip>
 #include <string>
 #include <cstrike>
-#define PLUGIN_VERSION			"1.0"
+#define PLUGIN_VERSION			"1.1"
 #define PLUGIN_NAME			    "css_savechat_command"
 #define DEBUG 0
 
@@ -275,7 +275,10 @@ stock void LogCommand(int client, int args)
 		strncmp(cmd, "menuselect", 10, false) == 0 || //menuselect 1~9
 		strncmp(cmd, "demo", 4, false) == 0 || // demorestart
 		strncmp(cmd, "achievement_", 12, false) == 0 || // achievement_earned x x
-		strncmp(cmd, "drop", 4, false) == 0 // drop weapon
+		strncmp(cmd, "drop", 4, false) == 0 || // drop weapon
+		strncmp(cmd, "buy", 3, false) == 0 || // buy weapon
+		strncmp(cmd, "spec_", 5, false) == 0 || // spec_next / spec_prev
+		strncmp(cmd, "nightvision", 11, false) == 0 // nightvision
 	  ) 
 	{
 		return;

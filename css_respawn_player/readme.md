@@ -16,6 +16,9 @@ Allows players to be respawned at one's crosshair.
 
 * <details><summary>Changelog | 版本日誌</summary>
 
+	* v1.1 (2023-3-8)
+		* Give Kevlar Suit and a Helmet when repsawn player
+
 	* v1.0 (2023-3-3)
 		* Initial Release
 </details>
@@ -27,17 +30,19 @@ Allows players to be respawned at one's crosshair.
 
 	* cfg/sourcemod/css_respawn_player.cfg
 		```php
-		// Add 'Respawn player' item in admin menu under 'Player commands' category? (0 - No, 1 - Yes)
+		// If 1, Add 'Respawn player' item in admin menu under 'Player commands' category
 		css_respawn_player_adminmenu "1"
+
+		// If 1, Give Kevlar Suit and a Helmet when repsawn player
+		css_respawn_player_armor "1"
 
 		// After respawn player, teleport player to 0=Crosshair, 1=Self (You must be alive).
 		css_respawn_player_destination "0"
 
 		// Respawn players with this loadout, separate by commas
-		// Default: "weapon_glock,weapon_mp5navy"
 		css_respawn_player_loadout "weapon_knife,weapon_glock,weapon_mp5navy"
 
-		// Notify in chat and log action about respawn? (0 - No, 1 - Yes)
+		// If 1, Notify in chat and log action about respawn?
 		css_respawn_player_showaction "1"
 		```
 </details>
@@ -60,4 +65,5 @@ Allows players to be respawned at one's crosshair.
 * 功能
 	* 可以加入到管理員菜單下，輸入!admin->玩家指令->復活玩家
 	* 可設置復活後給予的武器
+	* 可設置是否給防彈背心與頭盔
 	* 紀錄log
