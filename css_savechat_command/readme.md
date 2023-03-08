@@ -15,6 +15,9 @@ Records player chat messages and commands to a file
 
 * <details><summary>Changelog | 版本日誌</summary>
 
+	* v1.1 (2023-3-4)
+        * Comamnd Filter
+
 	* v1.0 (2023-3-3)
 		* Initial Release
 </details>

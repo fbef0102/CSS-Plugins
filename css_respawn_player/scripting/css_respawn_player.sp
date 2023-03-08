@@ -5,7 +5,7 @@
 #include <sdktools>
 #include <adminmenu>
 #include <cstrike>
-#define PLUGIN_VERSION			"1.0"
+#define PLUGIN_VERSION			"1.1"
 #define PLUGIN_NAME			    "css_respawn_player"
 #define DEBUG 0
 
@@ -44,9 +44,9 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 
 float VEC_DUMMY[3]	= {99999.0, 99999.0, 99999.0};
 
-ConVar g_cvLoadout, g_cvShowAction, g_cvAddTopMenu, g_cvDestination;
+ConVar g_cvLoadout, g_cvArmor, g_cvShowAction, g_cvAddTopMenu, g_cvDestination;
 char g_sLoadout[256];
-bool g_bShowAction, g_bAddTopMenu;
+bool g_bArmor, g_bShowAction, g_bAddTopMenu;
 int g_iDestination;
 
 bool g_bMenuAdded;
@@ -59,14 +59,16 @@ public void OnPluginStart()
 	LoadTranslations( TRANSLATION_FILE);
 	
 	g_cvLoadout = 		CreateConVar( PLUGIN_NAME ... "_loadout", 		"weapon_knife,weapon_glock,weapon_mp5navy", 	"Respawn players with this loadout, separate by commas", CVAR_FLAGS);
-	g_cvShowAction = 	CreateConVar( PLUGIN_NAME ... "_showaction", 	"1", 		  	  	"Notify in chat and log action about respawn? (0 - No, 1 - Yes)", CVAR_FLAGS, true, 0.0, true, 1.0);
+	g_cvArmor = 		CreateConVar( PLUGIN_NAME ... "_armor", 		"1", 				"If 1, Give Kevlar Suit and a Helmet when repsawn player", CVAR_FLAGS, true, 0.0, true, 1.0);
+	g_cvShowAction = 	CreateConVar( PLUGIN_NAME ... "_showaction", 	"1", 		  	  	"If 1, Notify in chat and log action about respawn?", CVAR_FLAGS, true, 0.0, true, 1.0);
 	g_cvDestination = 	CreateConVar( PLUGIN_NAME ... "_destination", 	"0", 		  		"After respawn player, teleport player to 0=Crosshair, 1=Self (You must be alive).", CVAR_FLAGS, true, 0.0, true, 1.0);
-	g_cvAddTopMenu = 	CreateConVar( PLUGIN_NAME ... "_adminmenu", 	"1", 	 	  		"Add 'Respawn player' item in admin menu under 'Player commands' category? (0 - No, 1 - Yes)", CVAR_FLAGS, true, 0.0, true, 1.0);
+	g_cvAddTopMenu = 	CreateConVar( PLUGIN_NAME ... "_adminmenu", 	"1", 	 	  		"If 1, Add 'Respawn player' item in admin menu under 'Player commands' category", CVAR_FLAGS, true, 0.0, true, 1.0);
 	CreateConVar(                     PLUGIN_NAME ... "_version",     PLUGIN_VERSION, PLUGIN_NAME ... " Plugin Version", CVAR_FLAGS_PLUGIN_VERSION);
 	AutoExecConfig(true, 			  PLUGIN_NAME);
 	
 	GetCvars();
 	g_cvLoadout.AddChangeHook(ConVarChanged_Cvars);
+	g_cvArmor.AddChangeHook(ConVarChanged_Cvars);
 	g_cvShowAction.AddChangeHook(ConVarChanged_Cvars);
 	g_cvDestination.AddChangeHook(ConVarChanged_Cvars);
 	g_cvAddTopMenu.AddChangeHook(OnCvarChanged_AddTopMenu);
@@ -111,6 +113,7 @@ void OnCvarChanged_AddTopMenu(ConVar convar, const char[] oldValue, const char[]
 void GetCvars()
 {
 	g_cvLoadout.GetString(g_sLoadout, sizeof g_sLoadout);
+	g_bArmor = g_cvArmor.BoolValue;
 	g_bShowAction = g_cvShowAction.BoolValue;
 	g_iDestination = g_cvDestination.IntValue;
 	g_bAddTopMenu = g_cvAddTopMenu.BoolValue;
@@ -382,6 +385,7 @@ bool vRespawnPlayer(int client, int target, float vec[3] = {99999.0, 99999.0, 99
 			}
 
 			CS_RespawnPlayer(target);
+			vPerformTeleport(client, target, vec, ang);
 			
 			char sItems[6][64];
 			if(strlen(g_sLoadout) > 0)
@@ -398,8 +402,11 @@ bool vRespawnPlayer(int client, int target, float vec[3] = {99999.0, 99999.0, 99
 					}
 				}
 			}
-			
-			vPerformTeleport(client, target, vec, ang);
+
+			if(g_bArmor)
+			{
+				GivePlayerItem(target, "item_assaultsuit");
+			}
 		}
 		
 		case CS_TEAM_CT:
@@ -411,7 +418,8 @@ bool vRespawnPlayer(int client, int target, float vec[3] = {99999.0, 99999.0, 99
 			}
 
 			CS_RespawnPlayer(target);
-			
+			vPerformTeleport(client, target, vec, ang);
+		
 			char sItems[6][64];
 			if(strlen(g_sLoadout) > 0)
 			{
@@ -428,7 +436,10 @@ bool vRespawnPlayer(int client, int target, float vec[3] = {99999.0, 99999.0, 99
 				}
 			}
 			
-			vPerformTeleport(client, target, vec, ang);
+			if(g_bArmor)
+			{
+				GivePlayerItem(target, "item_assaultsuit");
+			}
 		}
 		
 		case CS_TEAM_SPECTATOR:
