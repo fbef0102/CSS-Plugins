@@ -1,7 +1,7 @@
 # CSS-Plugins by Harry Potter
 CSS Competitive enhancement, bug/glitch fixes, general purpose and freaky-fun plugins.
 
->All plugins in here only apply to CSS (last edited:2023/3/8)
+>All plugins in here only apply to CSS
 # Appreciate my work, you can [PayPal Donate](https://paypal.me/Harry0215?locale.x=zh_TW) me.
 If you want any modify or request, free to use or pay me money to do it.
 # Require
@@ -24,6 +24,8 @@ If you want any modify or request, free to use or pay me money to do it.
     * 復活死亡的玩家並傳送
 * <b>[css_savechat_command](/css_savechat_command)</b>: Records player chat messages and commands to a file
     * 紀錄玩家的聊天紀錄與指令到文件裡
+* <b>[css_gametype_description](/css_gametype_description)</b>: Allows changing of displayed game type in server browser
+    * 更改伺服器的遊戲欄資訊
 
 # Scripting Compiler
 * [sourcemod v1.11 compiler](https://www.sourcemod.net/downloads.php?branch=1.11-dev): scripting folder
