@@ -6,7 +6,9 @@
 #include <geoip>
 #include <string>
 #include <cstrike>
-#define PLUGIN_VERSION			"1.1"
+#include <basecomm>
+
+#define PLUGIN_VERSION			"1.2-2024/4/7"
 #define PLUGIN_NAME			    "css_savechat_command"
 #define DEBUG 0
 
@@ -43,6 +45,9 @@ Handle fileHandle       = null;
 ConVar g_hCvarEnable, g_hCvarConsole;
 bool g_bCvarEnable, g_bCvarConsole;
 
+StringMap
+	g_smIgnoreList;
+
 public void OnPluginStart()
 {
 	hostport = FindConVar("hostport");
@@ -59,21 +64,24 @@ public void OnPluginStart()
 
 	HookEvent("player_disconnect", 	event_PlayerDisconnect);
 
-	/* Say commands */
-	RegConsoleCmd("say", Command_Say);
-	RegConsoleCmd("say_team", Command_SayTeam);
+	g_smIgnoreList = new StringMap();
+	g_smIgnoreList.SetValue("VModEnable", true); // join server check
+	g_smIgnoreList.SetValue("vban", true); // join server check
+	g_smIgnoreList.SetValue("joingame", true); // joingame
+	g_smIgnoreList.SetValue("jointeam", true); // jointeam
+	g_smIgnoreList.SetValue("joinclass", true); // select character
+	g_smIgnoreList.SetValue("menuselect", true); //menuselect 1~9
+	g_smIgnoreList.SetValue("demo", true); // character vocalize
+	g_smIgnoreList.SetValue("achievement_earned", true); // achievement_earned x x
+	g_smIgnoreList.SetValue("drop", true); // drop weapon
+	g_smIgnoreList.SetValue("buy", true); // buy weapon
+	g_smIgnoreList.SetValue("spec_next", true); // spec_next
+	g_smIgnoreList.SetValue("spec_prev", true); // spec_prev
+	g_smIgnoreList.SetValue("nightvision", true); // nightvision
 
-	char date[21];
-	char logFile[100];
-	/* Format date for log filename */
-	FormatTime(date, sizeof(date), "%d%m%y", -1);
-
-	/* Create name of logfile to use */
-	Format(logFile, sizeof(logFile), "/logs/chat%s.log", date);
-	BuildPath(Path_SM, chatFile, PLATFORM_MAX_PATH, logFile);
 }
 
-public void ConVarChanged_Cvars(ConVar convar, const char[] oldValue, const char[] newValue)
+void ConVarChanged_Cvars(ConVar convar, const char[] oldValue, const char[] newValue)
 {
 	GetCvars();
 }
@@ -85,7 +93,7 @@ void GetCvars()
 	hostport.GetString(sHostport, sizeof(sHostport));
 }
 
-public Action Command_Say(int client, int args)
+public Action OnClientSayCommand(int client, const char[] command, const char[] sArgs)
 {
 	if(g_bCvarEnable == false)
 		return Plugin_Continue;
@@ -93,22 +101,22 @@ public Action Command_Say(int client, int args)
 	if(client < 0 || client > MaxClients)
 		return Plugin_Continue;
 
-	LogChat(client, args, false);
+	if (client > 0 && BaseComm_IsClientGagged(client) == true) //this client has been gagged
+		return Plugin_Continue;	
+
+	if (strcmp(command, "say_team") == 0)
+	{
+		LogChat2(client, sArgs, true);
+	}
+	else
+	{
+		LogChat2(client, sArgs, false);
+	}
+
 	return Plugin_Continue;
 }
 
-public Action Command_SayTeam(int client, int args)
-{
-	if(g_bCvarEnable == false)
-		return Plugin_Continue;
-
-	if(client < 0 || client > MaxClients)
-		return Plugin_Continue;
-
-	LogChat(client, args, true);
-	return Plugin_Continue;
-}
-
+// 不會檢測到客戶端能執行的指令
 public Action OnClientCommand(int client, int args) 
 {
 	if(g_bCvarEnable == false || g_bCvarConsole == false)
@@ -181,7 +189,7 @@ public void OnClientPostAdminCheck(int client)
 	SaveMessage(msg);
 }
 
-public void event_PlayerDisconnect(Event event, const char[] name, bool dontBroadcast) 
+void event_PlayerDisconnect(Event event, const char[] name, bool dontBroadcast) 
 {
 	if(g_bCvarEnable == false)
 		return;
@@ -192,53 +200,49 @@ public void event_PlayerDisconnect(Event event, const char[] name, bool dontBroa
 	{
 		static char msg[2048];
 		static char time[21];
-		static char country[3];
-		static char steamID[128];
+		//static char country[3];
+		static char steamID[64];
 		static char playerIP[50];
+		static char reason[128];
+		event.GetString("reason", reason, sizeof(reason));
 		
 		GetClientAuthId(client, AuthId_Steam2, steamID, sizeof(steamID));
 		
 		if(GetClientIP(client, playerIP, sizeof(playerIP), true) == false) {
 			//country   = "  "
 		} else {
-			if(GeoipCode2(playerIP, country) == false) {
-				//country = "  ";
-			}
+			//if(GeoipCode2(playerIP, country) == false) {
+			//	//country = "  ";
+			//}
 		}
 		
 		FormatTime(time, sizeof(time), "%H:%M:%S", -1);
-		FormatEx(msg, sizeof(msg), "[%s] (%-20s | %-15s) %-25N has left.",
+		FormatEx(msg, sizeof(msg), "[%s] (%-20s | %-15s) %-25N has left (%s).",
 			time,
 			steamID,
 			playerIP,
-			client);
+			client,
+			reason);
 
 		SaveMessage(msg);
 	}
 }
 
-/*
- * Extract all relevant information and format 
- */
-stock void LogChat(int client, int args, bool teamchat)
+void LogChat2(int client, const char[] sArgs, bool teamchat)
 {
 	static char msg[2048];
 	static char time[21];
-	static char text[1024];
 	static char country[3];
 	static char playerIP[50];
 	static char teamName[20];
 	static char steamID[128];
-
-	GetCmdArgString(text, sizeof(text));
-	StripQuotes(text);
 	
 	if (client == 0 || !IsClientInGame(client)) {
-		/* Don't try and obtain client country/team if this is a console message */
-		//FormatEx(country, sizeof(country), "  ");
-		FormatEx(teamName, sizeof(teamName), "");
+		country[0] = '\0';
+		teamName[0] = '\0';
+		playerIP[0] = '\0';
+		steamID[0] = '\0';
 	} else {
-		/* Get 2 digit country code for current player */
 		if(GetClientIP(client, playerIP, sizeof(playerIP), true) == false) {
 			//country   = "  ";
 		} else {
@@ -258,7 +262,7 @@ stock void LogChat(int client, int args, bool teamchat)
 		teamName,
 		client,
 		teamchat == true ? "(TEAM) " : "",
-		text);
+		sArgs);
 
 	SaveMessage(msg);
 }
@@ -269,20 +273,12 @@ stock void LogCommand(int client, int args)
 	static char text[1024];
 
 	GetCmdArg(0, cmd, sizeof(cmd));
-	if( strncmp(cmd, "VModEnable", 10, false) == 0 || // join server check
-		strncmp(cmd, "vban", 4, false) == 0  || // join server check
-		strncmp(cmd, "joingame", 8, false) == 0 || // joingame
-		strncmp(cmd, "menuselect", 10, false) == 0 || //menuselect 1~9
-		strncmp(cmd, "demo", 4, false) == 0 || // demorestart
-		strncmp(cmd, "achievement_", 12, false) == 0 || // achievement_earned x x
-		strncmp(cmd, "drop", 4, false) == 0 || // drop weapon
-		strncmp(cmd, "buy", 3, false) == 0 || // buy weapon
-		strncmp(cmd, "spec_", 5, false) == 0 || // spec_next / spec_prev
-		strncmp(cmd, "nightvision", 11, false) == 0 // nightvision
-	  ) 
+	bool bTemp;
+	if( g_smIgnoreList.GetValue(cmd, bTemp) == true )
 	{
 		return;
 	}
+
 	GetCmdArgString(text, sizeof(text));
 	StripQuotes(text);
 
@@ -294,9 +290,10 @@ stock void LogCommand(int client, int args)
 	static char steamID[128];
 	
 	if (client == 0 || !IsClientInGame(client)) {
-		/* Don't try and obtain client country/team if this is a console message */
-		//FormatEx(country, sizeof(country), "  ");
-		FormatEx(teamName, sizeof(teamName), "");
+		country[0] = '\0';
+		teamName[0] = '\0';
+		playerIP[0] = '\0';
+		steamID[0] = '\0';
 	} else {
 		/* Get 2 digit country code for current player */
 		if(GetClientIP(client, playerIP, sizeof(playerIP), true) == false) {
@@ -328,8 +325,13 @@ void SaveMessage(const char[] message)
 	fileHandle = OpenFile(chatFile, "a");  /* Append */
 	if(fileHandle == null)
 	{
-		CreateDirectory("/addons/sourcemod/logs/chat", 0);
+		CreateDirectory("/addons/sourcemod/logs/chat", 777);
 		fileHandle = OpenFile(chatFile, "a"); //open again
+		if(fileHandle == null)
+		{
+			LogError("Can not create chat file: %s", chatFile);
+			return;
+		}
 	}
 	WriteFileLine(fileHandle, message);
 	delete fileHandle;
