@@ -24,10 +24,10 @@ If you want any modify or request, free to use or pay me money to do it.
     * 復活死亡的玩家並傳送
 * <b>[css_savechat_command](/css_savechat_command)</b>: Records player chat messages and commands to a file
     * 紀錄玩家的聊天紀錄與指令到文件裡
-* <b>[css_gametype_description](/css_gametype_description)</b>: Allows changing of displayed game type in server browser
-    * 更改伺服器的遊戲欄資訊
 * <b>[css_DynamicHostname](/css_DynamicHostname)</b>: Server name with txt file (Support any language)
     * 伺服器房名可以寫中文的插件
+* <b>[css_empty_server_restart](/css_empty_server_restart)</b>: Restart server when the last player disconnects from the server.
+    * 最後一位玩家離開伺服器之後自動關閉Server並重啟
 
 # Scripting Compiler
 * [sourcemod v1.11 compiler](https://www.sourcemod.net/downloads.php?branch=1.11-dev): scripting folder
