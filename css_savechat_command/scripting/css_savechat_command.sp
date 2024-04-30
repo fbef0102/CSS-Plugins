@@ -65,7 +65,13 @@ public void OnPluginStart()
 	HookEvent("player_disconnect", 	event_PlayerDisconnect);
 
 	g_smIgnoreList = new StringMap();
-	g_smIgnoreList.SetValue("VModEnable", true); // join server check
+	g_smIgnoreList.SetValue("spec_prev", true);
+	g_smIgnoreList.SetValue("spec_next", true);
+	g_smIgnoreList.SetValue("spec_mode", true);
+	g_smIgnoreList.SetValue("buyammo1", true);
+	g_smIgnoreList.SetValue("buyammo2", true);
+	g_smIgnoreList.SetValue("commandmenu", true);
+	g_smIgnoreList.SetValue("vmodenable", true); // join server check
 	g_smIgnoreList.SetValue("vban", true); // join server check
 	g_smIgnoreList.SetValue("joingame", true); // joingame
 	g_smIgnoreList.SetValue("jointeam", true); // jointeam
@@ -142,7 +148,7 @@ public void OnMapStart(){
 	GetCurrentMap(map, sizeof(map));
 
 	/* The date may have rolled over, so update the logfile name here */
-	FormatTime(date, sizeof(date), "%y_%m_%d", -1);
+	FormatTime(date, sizeof(date), "%Y_%m_%d", -1);
 	Format(logFile, sizeof(logFile), "/logs/chat/server_%s_chat_%s.log", sHostport, date);
 	BuildPath(Path_SM, chatFile, PLATFORM_MAX_PATH, logFile);
 
@@ -195,17 +201,37 @@ void event_PlayerDisconnect(Event event, const char[] name, bool dontBroadcast)
 		return;
 
 	int client = GetClientOfUserId(event.GetInt("userid"));
+
+	static char msg[2048];
+	static char time[21];
+	//static char country[3];
+	static char steamID[64];
+	static char playerIP[50];
+	static char reason[128];
+	event.GetString("reason", reason, sizeof(reason));
+	
+	if(client == 0 && strcmp(reason, "Connection closing", false) == 0)
+	{
+		static char playerName[128];
+		event.GetString("name", playerName, sizeof(playerName));
+
+		static char networkid[32];
+		event.GetString("networkid", networkid, sizeof(networkid));
+
+		FormatTime(time, sizeof(time), "%H:%M:%S", -1);
+		FormatEx(msg, sizeof(msg), "[%s] (%-20s | %-15s) %-25s has left (%s).",
+			time,
+			networkid,
+			"Unknown",
+			playerName,
+			reason);
+
+		SaveMessage(msg);
+		return;
+	}
 	
 	if( client && !IsFakeClient(client) && !dontBroadcast )
 	{
-		static char msg[2048];
-		static char time[21];
-		//static char country[3];
-		static char steamID[64];
-		static char playerIP[50];
-		static char reason[128];
-		event.GetString("reason", reason, sizeof(reason));
-		
 		GetClientAuthId(client, AuthId_Steam2, steamID, sizeof(steamID));
 		
 		if(GetClientIP(client, playerIP, sizeof(playerIP), true) == false) {
@@ -273,6 +299,7 @@ stock void LogCommand(int client, int args)
 	static char text[1024];
 
 	GetCmdArg(0, cmd, sizeof(cmd));
+	StringToLowerCase(cmd);
 	bool bTemp;
 	if( g_smIgnoreList.GetValue(cmd, bTemp) == true )
 	{
@@ -360,3 +387,10 @@ void my_GetTeamName(int team, char[] sTeamName, int size)
 	}
 }
 
+void StringToLowerCase(char[] input)
+{
+    for (int i = 0; i < strlen(input); i++)
+    {
+        input[i] = CharToLower(input[i]);
+    }
+}
