@@ -19,6 +19,7 @@ Teleport an alive player in game
 	English
 	繁體中文
 	简体中文
+	Русский
 	```
 
 * <details><summary>Changelog | 版本日誌</summary>
