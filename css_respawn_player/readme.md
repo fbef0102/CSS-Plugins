@@ -13,6 +13,13 @@ Allows players to be respawned at one's crosshair.
 	```
 	CSS
 	```
+* Translation Support | 支援翻譯
+	```
+	English
+	繁體中文
+	简体中文
+	Русский
+	```
 
 * <details><summary>Changelog | 版本日誌</summary>
 
