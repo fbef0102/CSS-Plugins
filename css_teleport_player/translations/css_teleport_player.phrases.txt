@@ -6,6 +6,7 @@
 		"zho"		"傳送玩家"
 		"chi"		"传送玩家"
 		"ru"		"Телепорт игрока"
+		"tr"		"Oyuncuyu Işınla"
 	}	
 	"css_wind_2"
 	{
@@ -13,6 +14,7 @@
 		"zho"		"選擇玩家"
 		"chi"		"选择玩家"
 		"ru"		"Выберите цель"
+		"tr"		"Hedef Seç"
 	}	
 	"css_wind_3"
 	{
@@ -20,6 +22,7 @@
 		"zho"		"目前沒有活著的玩家"
 		"chi"		"目前没有活着的玩家"
 		"ru"		"Живых игроков нет"
+		"tr"		"Canlı oyuncu bulunamadı"
 	}	
 	"css_wind_4"
 	{
@@ -27,6 +30,7 @@
 		"zho"		"傳送對象不是一個活著的玩家"
 		"chi"		"传送对象不是一个活着的玩家"
 		"ru"		"Цель не является живым игроком."
+		"tr"		"Hedef geçerli bir canlı oyuncu değil."
 	}	
 	"css_wind_5"
 	{
@@ -34,6 +38,7 @@
 		"zho"		"選擇傳送地點"
 		"chi"		"选择传送地点"
 		"ru"		"Выберите назначение"
+		"tr"		"Hedef Seç"
 	}	
 	"css_wind_6"
 	{
@@ -41,6 +46,7 @@
 		"zho"		"準心上"
 		"chi"		"准心上"
 		"ru"		"Прицел"
+		"tr"		"Nişangah"
 	}	
 	"css_wind_7"
 	{
@@ -48,6 +54,7 @@
 		"zho"		"自己身上"
 		"chi"		"自己身上"
 		"ru"		"К себе"
+		"tr"		"Kendine"
 	}	
 	"css_wind_11"
 	{
@@ -55,6 +62,7 @@
 		"zho"		"不是一個活著的玩家，請重新選擇!"
 		"chi"		"不是一个活着的玩家，请重新选择!"
 		"ru"		"Не живой игрок, выберите снова!"
+		"tr"		"Geçerli bir canlı oyuncu değil, yeniden seç!"
 	}	
 	"css_wind_12"
 	{
@@ -62,6 +70,7 @@
 		"zho"		"你傳送了 %N."
 		"chi"		"你传送了 %N."
 		"ru"		"Вы телепортировали игрока %N."
+		"tr"		"%N adlı oyuncuyu ışınladınız."
 	}	
 	"css_wind_13"
 	{
@@ -69,6 +78,7 @@
 		"zho"		"無法傳送 %N，請重新選擇!"
 		"chi"		"无法传送 %N，请重新选择!"
 		"ru"		"Не удалось телепортировать игрока %N, попробуйте снова позже!"
+		"tr"		"%N adlı oyuncuyu ışınlama başarısız oldu, daha sonra tekrar dene!"
 	}	
 	"css_wind_14"
 	{
@@ -76,6 +86,7 @@
 		"zho"		"要傳送的對象不是一個活著的玩家，請重新選擇!"
 		"chi"		"要传送的对象不是一个活着的玩家，请重新选择!"
 		"ru"		"Цель не жива, выберите снова!"
+		"tr"		"Hedef geçerli bir canlı oyuncu değil, tekrar seç!"
 	}	
 	"css_wind_16"
 	{
@@ -83,5 +94,6 @@
 		"zho"		"自己"
 		"chi"		"自己"
 		"ru"		"Себя"
+		"tr"		"Kendim"
 	}	
 }
