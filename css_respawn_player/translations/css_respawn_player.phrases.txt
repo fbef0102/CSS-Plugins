@@ -30,7 +30,7 @@
 		"zho"       "沒有死掉的玩家"
 		"chi"       "没有死掉的玩家"
 		"ru"		"Мёртвых выживших нет"
-		"tr"		"Ölü oyuncu yok"
+		"tr"		"Ölü Oyuncu Yok"
 	}
 	"message_1"
 	{
@@ -54,6 +54,6 @@
 		"zho"       "失敗! 目標玩家是旁觀者"
 		"chi"       "失败! 目标玩家是旁观者"
 		"ru"		"Не удалось! %N наблюдатель"
-		"tr"		"Failed! %N bir izleyici"
+		"tr"		"Başarısız! %N bir izleyici"
 	}
 }
