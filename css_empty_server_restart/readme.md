@@ -12,12 +12,12 @@ Restart server when the last player disconnects from the server.
 
 * <details><summary>How does it work?</summary>
 
-* When the last player disconnects from the server, this plugin will force server crash itself.
-* This plugin does not restart your server, you need to use server tools or linux system, which make server auto-restart if crash. For example
-    1. LINUX
-    2. WINDOWS with [seDirector](https://sedirector.net/)
-* Keep your server clean and fresh, get rid of laggy and huge memory usage
-* Unload [Accelerator extension](https://forums.alliedmods.net/showthread.php?t=277703) automatically before crash. Avoid crash report spam.
+    * When the last player disconnects from the server, this plugin will force server crash itself.
+    * This plugin does not restart your server, you need to use server tools or linux system, which make server auto-restart if crash. For example
+        1. LINUX
+        2. WINDOWS with [seDirector](https://sedirector.net/)
+    * Keep your server clean and fresh, get rid of laggy and huge memory usage
+    * Unload [Accelerator extension](https://forums.alliedmods.net/showthread.php?t=277703) automatically before crash. Avoid crash report spam.
 </details>
 
 * <details><summary>ConVar | 指令</summary>
