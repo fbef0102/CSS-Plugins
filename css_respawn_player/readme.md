@@ -19,6 +19,7 @@ Allows players to be respawned at one's crosshair.
 	繁體中文
 	简体中文
 	Русский
+ 	Türkçe
 	```
 
 * <details><summary>Changelog | 版本日誌</summary>
